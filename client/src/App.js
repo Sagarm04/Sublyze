@@ -1,14 +1,6 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import './App.css';
 import logo from './assets/logo.png';
-import {
-  SignedIn,
-  SignedOut,
-  SignInButton,
-  SignUpButton,
-  UserButton,
-  useUser
-} from "@clerk/clerk-react";
 import Subscriptions from './components/Subscriptions';
 
 // Smart Summary Component
@@ -104,7 +96,6 @@ const SmartSummary = ({ transcription, onClose }) => {
 };
 
 function App() {
-  const { isSignedIn } = useUser();
   const [video, setVideo] = useState(null);
   const [videoDuration, setVideoDuration] = useState(0);
   const [transcription, setTranscription] = useState('');
@@ -606,14 +597,6 @@ function App() {
           <span className="centered-title" tabIndex={0}>Sublyze</span>
         </div>
         <div className="header-right">
-          <SignedOut>
-            <SignInButton>
-              <button className="clerk-btn sign-in-btn">Sign In</button>
-            </SignInButton>
-            <SignUpButton>
-              <button className="clerk-btn sign-up-btn">Sign Up</button>
-            </SignUpButton>
-          </SignedOut>
           <button 
             className="theme-toggle" 
             onClick={toggleTheme}
@@ -621,10 +604,8 @@ function App() {
           >
             <span>{theme === 'dark' ? '🌙' : '☀️'}</span>
           </button>
-          <SignedIn>
-            <UserButton appearance={{ elements: { avatarBox: 'user-avatar-large' } }} />
-          </SignedIn>
-        </div>
+          <div className="toolbar-divider"></div>
+                </div>
       </header>
 
       <main>
