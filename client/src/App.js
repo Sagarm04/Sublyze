@@ -124,12 +124,10 @@ function App() {
     'ko': 'Korean',
     'zh': 'Chinese'
   });
-  const [selectedLanguage, setSelectedLanguage] = useState('en');
   const [translation, setTranslation] = useState('');
   const [translationLanguage, setTranslationLanguage] = useState('en');
   const [isTranslating, setIsTranslating] = useState(false);
   const [lastTranslationLanguage, setLastTranslationLanguage] = useState('en');
-  const [languageError, setLanguageError] = useState('');
   const [showTimestamps, setShowTimestamps] = useState(false);
   const [progress, setProgress] = useState(0);
   const [statusIndex, setStatusIndex] = useState(0);
@@ -219,12 +217,10 @@ function App() {
         
         if (data.languages) {
           setLanguages(data.languages);
-          setLanguageError('');
         }
       } catch (err) {
         console.error('Error fetching languages:', err);
         // Don't show error message since we have default languages
-        setLanguageError('');
       }
     };
 
@@ -286,7 +282,7 @@ function App() {
 
     const formData = new FormData();
     formData.append('video', video);
-    formData.append('language', selectedLanguage);
+    formData.append('language', translationLanguage);
 
     try {
       console.log('Starting transcription request...');
@@ -407,13 +403,6 @@ function App() {
     return Math.round((words / duration) * 60);
   };
 
-  const togglePanel = (panelId) => {
-    const panel = document.getElementById(`${panelId}Panel`);
-    if (panel) {
-      panel.classList.toggle('active');
-    }
-  };
-
   const handleEditTranscript = () => {
     setEditing(true);
     showNotification('Edit mode enabled - Scroll to the bottom to save your changes.');
@@ -448,14 +437,6 @@ function App() {
   const handleExportFormat = (format) => {
     showNotification(`Preparing ${format.toUpperCase()} download...`);
     handleDownload();
-  };
-
-  const handleSeekTo = (seconds, event) => {
-    console.log(`Seeking to ${seconds} seconds`);
-    document.querySelectorAll('.timestamp').forEach(ts => {
-      ts.style.background = 'transparent';
-    });
-    event.target.style.background = 'rgba(139, 92, 246, 0.2)';
   };
 
   const changeTextSize = (size) => {
