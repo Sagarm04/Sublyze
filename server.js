@@ -10,17 +10,13 @@ const app = express();
 const port = process.env.PORT || 5001;
 
 // Middleware
-app.use(cors({
-  origin: 'http://localhost:3000',
-  methods: ['GET', 'POST'],
-  allowedHeaders: ['Content-Type', 'Accept']
-}));
+app.use(cors());
 app.use(express.json());
 
 // Add headers middleware
 app.use((req, res, next) => {
   res.setHeader('Content-Type', 'application/json');
-  res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
+  res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Accept');
   next();
