@@ -25,7 +25,11 @@ app.use((req, res, next) => {
 // Configure multer for video upload
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, 'uploads/');
+    const uploadsDir = path.join(__dirname, 'uploads');
+    if (!fs.existsSync(uploadsDir)) {
+      fs.mkdirSync(uploadsDir, { recursive: true });
+    }
+    cb(null, uploadsDir);
   },
   filename: function (req, file, cb) {
     cb(null, Date.now() + path.extname(file.originalname));
@@ -250,10 +254,15 @@ if (process.env.NODE_ENV === 'production') {
 // Create uploads directory if it doesn't exist
 const uploadsDir = path.join(__dirname, 'uploads');
 if (!fs.existsSync(uploadsDir)) {
-  fs.mkdirSync(uploadsDir);
+  fs.mkdirSync(uploadsDir, { recursive: true });
 }
 
-app.listen(port, () => {
-  console.log(`Server is running on port ${port}`);
-  console.log('OpenAI API Key configured:', process.env.OPENAI_API_KEY ? 'Yes' : 'No');
-}); 
+// For Vercel serverless functions
+if (process.env.NODE_ENV === 'production') {
+  module.exports = app;
+} else {
+  app.listen(port, () => {
+    console.log(`Server is running on port ${port}`);
+    console.log('OpenAI API Key configured:', process.env.OPENAI_API_KEY ? 'Yes' : 'No');
+  });
+} 
