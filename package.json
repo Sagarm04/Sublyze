@@ -1,5 +1,5 @@
 {
-  "name": "sublyze",
+  "name": "sublyze-app",
   "version": "1.0.0",
   "description": "A web application for video transcription and captioning",
   "main": "server.js",
